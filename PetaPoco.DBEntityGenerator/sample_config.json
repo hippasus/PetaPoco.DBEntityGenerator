@@ -1,0 +1,25 @@
+{
+    "ProviderName": "Npgsql",
+    "ConnectionString": "Host=pgsql-local;Port=5432;Database=**db_name**;Username=**user**;Password=**pwd**;Timeout=15;Pooling=True;MinPoolSize=1;MaxPoolSize=20;CommandTimeout=20;",
+    "SchemaName": null,
+    "ClassPrefix": null,
+    "ClassSuffix": null,
+    "IncludeViews": false,
+    "ExcludePrefix": [],
+    "Namespace": "DbEntities",
+    "ExplicitColumns": true,
+    "TrackModifiedColumns": true,
+    "Tables": {
+        "public.orders": {
+            "Ignore": false,
+            "ClassName": "Order",
+            "Columns": {
+                "declaration": {
+                    "Ignore": false,
+                    "InsertTemplate": "CAST({0}{1} AS jsonb)",
+                    "UpdateTemplate": "{0} = CAST({1}{2} AS jsonb)"
+                }
+            }
+        }
+    }
+}

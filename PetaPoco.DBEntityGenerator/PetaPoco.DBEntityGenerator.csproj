@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp2.2;net45;</TargetFrameworks>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <StartupObject />
+    <Version>0.1</Version>
+    <Description>Generate DB entiy classes for PetaPoco - a migrated tool from the old T4 template</Description>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <PackageReference Include="MySql.Data" Version="6.9.12" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.3.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
+    <PackageReference Include="MySql.Data" Version="8.0.17" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.31" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.5.0" />
+    <PackageReference Include="newtonsoft.json" Version="12.0.2" />
+    <PackageReference Include="Npgsql" Version="4.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="sample_config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
