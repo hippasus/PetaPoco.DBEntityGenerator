@@ -276,7 +276,7 @@
         {
             var cmd = context.Command;
 
-            WriteLine("    public class Record<T> where T : new()");
+            WriteLine("    public partial class Record<T> where T : new()");
             WriteLine("    {");
 
             if (cmd.TrackModifiedColumns)
