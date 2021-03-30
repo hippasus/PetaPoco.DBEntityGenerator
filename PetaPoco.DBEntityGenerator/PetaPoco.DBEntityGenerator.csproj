@@ -2,10 +2,10 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>netcoreapp2.2;net45;</TargetFrameworks>
+    <TargetFrameworks>net50;netcoreapp2.1;netcoreapp3.1;net45;</TargetFrameworks>
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <StartupObject />
-    <Version>0.1</Version>
+    <Version>0.1.1</Version>
     <Description>Generate DB entity classes for PetaPoco - a migrated tool from the old T4 template</Description>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
@@ -23,8 +23,8 @@
     <PackageReference Include="Oracle.ManagedDataAccess" Version="19.3.1" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'netcoreapp2.2'">
-    <PackageReference Include="MySql.Data" Version="8.0.17" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.1' or '$(TargetFramework)' == 'netcoreapp3.1' or '$(TargetFramework)' == 'net50'">
+    <PackageReference Include="MySql.Data" sVersion="8.0.17" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.31" />
     <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
   </ItemGroup>
