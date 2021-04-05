@@ -14,11 +14,11 @@
         public string SequenceName;
         public bool Ignore;
 
-        public Column PK
+        public List<Column> PrimaryKeys
         {
             get
             {
-                return this.Columns.SingleOrDefault(x => x.IsPK);
+                return this.Columns.Where(x => x.IsPK).ToList();
             }
         }
 
