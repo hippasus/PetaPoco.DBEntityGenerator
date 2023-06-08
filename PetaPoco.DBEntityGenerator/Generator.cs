@@ -287,6 +287,7 @@
 
                 WriteLine("        protected void MarkColumnModified(string column_name)");
                 WriteLine("        {");
+                WriteLine("            if (ModifiedColumns == null) OnLoaded();");
                 WriteLine("            if (ModifiedColumns != null)");
                 WriteLine("            {");
                 WriteLine("                ModifiedColumns[column_name] = true;");
