@@ -5,9 +5,9 @@
     <TargetFrameworks>net6.0</TargetFrameworks>
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <StartupObject />
-    <Version>0.1.2.2</Version>
+    <Version>0.1.2.3</Version>
     <Description>Generate DB entity classes for PetaPoco - a migrated tool from the old T4 template</Description>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
