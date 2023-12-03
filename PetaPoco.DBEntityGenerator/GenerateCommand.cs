@@ -19,6 +19,7 @@
         public string[] ExcludePrefix { get; set; }
 
         public string Namespace { get; set; }
+        public string[] UsingNamespaces { get; set; }
 
         public bool ExplicitColumns { get; set; }
         public bool TrackModifiedColumns { get; set; }
@@ -60,5 +61,7 @@
         public string InsertTemplate { get; set; }
 
         public string UpdateTemplate { get; set; }
+
+        public string[] CustomAttributes { get; set; }
     }
 }

@@ -48,6 +48,7 @@
         public bool ForceToUtc;
         public string InsertTemplate;
         public string UpdateTemplate;
+        public string[] CustomAttributes { get; set; }
     }
 
     public class Tables : List<Table>

@@ -1,6 +1,7 @@
 ﻿namespace PetaPoco.DBEntityGenerator
 {
     using PetaPoco.DBEntityGenerator.SchemaReaders;
+
     using System;
     using System.Collections.Generic;
     using System.Data.Common;
@@ -225,6 +226,7 @@
         {
             existedColumn.Ignore = columnAttribute.Ignore;
             existedColumn.ForceToUtc = columnAttribute.ForceToUtc;
+            existedColumn.CustomAttributes = columnAttribute.CustomAttributes;
 
             if (!string.IsNullOrWhiteSpace(columnAttribute.InsertTemplate))
             {
@@ -264,6 +266,17 @@
             WriteLine("");
             WriteLine("    using PetaPoco;");
             WriteLine("");
+
+            var usingNamespaces = context.Command.UsingNamespaces;
+            if (usingNamespaces != null && usingNamespaces.Any())
+            {
+                foreach (var usingNamespace in usingNamespaces)
+                {
+                    WriteLine($"    using {usingNamespace};");
+                }
+
+                WriteLine("");
+            }
         }
 
         private void WriteFileEnding()
@@ -394,6 +407,14 @@
                     if (cmd.ExplicitColumns)
                     {
                         WriteLine("        [Column]");
+                    }
+                }
+
+                if (col.CustomAttributes != null && col.CustomAttributes.Any())
+                {
+                    foreach (var customAttribute in col.CustomAttributes)
+                    {
+                        WriteLine($"        {customAttribute}");
                     }
                 }
 
