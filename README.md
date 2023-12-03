@@ -12,9 +12,9 @@ It supports net45 and net6.0.
 
 Choose any target framework that can run on your computer.
 
-By using it on netcore 6.0, you can run `dotnet ~/.nuget/packages/petapoco.dbentitygenerator/0.1.2/tools/net6.0/PetaPoco.DBEntityGenerator.dll`.
+By using it on netcore 6.0, you can run `dotnet ~/.nuget/packages/petapoco.dbentitygenerator/0.1.3/tools/net6.0/PetaPoco.DBEntityGenerator.dll`.
 
-By using it on net45 on windows, you can run `~\.nuget\packages\petapoco.dbentitygenerator\0.1.2\tools\net45\PetaPoco.DBEntityGenerator.exe`.
+By using it on net45 on windows, you can run `~\.nuget\packages\petapoco.dbentitygenerator\0.1.3\tools\net45\PetaPoco.DBEntityGenerator.exe`.
 
 Here are the parameters it supports:
 
