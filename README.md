@@ -8,13 +8,13 @@ This is a tool that can help. It is ported from the PetaPoco T4 template.
 
 It can be installed via nuget by installing the package [PetaPoco.DBEntityGenerator](https://www.nuget.org/packages/PetaPoco.DBEntityGenerator/).
 
-It supports net45 and net6.0.
+It supports net45 and net8.0.
 
 Choose any target framework that can run on your computer.
 
-By using it on netcore 6.0, you can run `dotnet ~/.nuget/packages/petapoco.dbentitygenerator/0.1.3/tools/net6.0/PetaPoco.DBEntityGenerator.dll`.
+By using it on netcore 8.0, you can run `dotnet ~/.nuget/packages/petapoco.dbentitygenerator/0.1.4/tools/net8.0/PetaPoco.DBEntityGenerator.dll`.
 
-By using it on net45 on windows, you can run `~\.nuget\packages\petapoco.dbentitygenerator\0.1.3\tools\net45\PetaPoco.DBEntityGenerator.exe`.
+By using it on net45 on windows, you can run `~\.nuget\packages\petapoco.dbentitygenerator\0.1.4\tools\net45\PetaPoco.DBEntityGenerator.exe`.
 
 Here are the parameters it supports:
 
