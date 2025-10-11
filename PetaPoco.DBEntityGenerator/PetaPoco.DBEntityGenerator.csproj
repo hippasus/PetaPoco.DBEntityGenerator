@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net8.0;net45;</TargetFrameworks>
+    <TargetFrameworks>net8.0;net472;</TargetFrameworks>
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <StartupObject />
     <Version>0.1.4</Version>
@@ -18,16 +18,16 @@
     <EmbeddedResource Include="logo.ico" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <PackageReference Include="MySql.Data" Version="6.9.12" />
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.18.0" />
-    <PackageReference Include="Npgsql" Version="4.0.8" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.29.0" />
+    <PackageReference Include="Npgsql" Version="4.0.17" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' != 'net45'">
-    <PackageReference Include="MySql.Data" sVersion="8.0.17" />
-    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.31" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
+  <ItemGroup Condition=" '$(TargetFramework)' != 'net472'">
+    <PackageReference Include="MySql.Data" Version="9.4.0" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.290" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
     <PackageReference Include="Npgsql" Version="5.0.18" />
   </ItemGroup>
 
