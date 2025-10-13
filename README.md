@@ -12,9 +12,9 @@ It supports net472 and net8.0.
 
 Choose any target framework that can run on your computer.
 
-By using it on netcore 8.0, you can run `dotnet ~/.nuget/packages/petapoco.dbentitygenerator/0.1.5/tools/net8.0/PetaPoco.DBEntityGenerator.dll`.
+By using it on netcore 8.0, you can run `dotnet ~/.nuget/packages/petapoco.dbentitygenerator/0.1.6/tools/net8.0/PetaPoco.DBEntityGenerator.dll`.
 
-By using it on net472 on windows, you can run `~\.nuget\packages\petapoco.dbentitygenerator\0.1.5\tools\net472\PetaPoco.DBEntityGenerator.exe`.
+By using it on net472 on windows, you can run `~\.nuget\packages\petapoco.dbentitygenerator\0.1.6\tools\net472\PetaPoco.DBEntityGenerator.exe`.
 
 Here are the parameters it supports:
 
@@ -30,6 +30,8 @@ Here are the parameters it supports:
 --explicitColumns         (Default: true) Explicit columns
 
 --trackModifiedColumns    (Default: true) Track modified columns
+
+--nullable                (Default: false) C# nullable enabled or not
 
 -o, --output              (Default: console) Output, valid options are console, file
 

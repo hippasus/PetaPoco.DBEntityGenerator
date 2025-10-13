@@ -30,16 +30,22 @@
             return str;
         };
 
-        internal static string CheckNullable(Column col)
+        internal static string CheckNullable(Column col, bool nullableEnabled)
         {
             string result = "";
-            if (col.IsNullable &&
+            if (col.IsNullable && nullableEnabled)
+            {
+                result = "?";
+            }
+            else if (col.IsNullable &&
                 col.PropertyType != "byte[]" &&
                 col.PropertyType != "string" &&
                 col.PropertyType != "Microsoft.SqlServer.Types.SqlGeography" &&
                 col.PropertyType != "Microsoft.SqlServer.Types.SqlGeometry"
                 )
+            {
                 result = "?";
+            }
 
             return result;
         }

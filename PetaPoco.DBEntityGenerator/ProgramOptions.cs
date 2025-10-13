@@ -22,6 +22,9 @@ namespace PetaPoco.DBEntityGenerator
         [Option("trackModifiedColumns", Default = true, HelpText = "Track modified columns")]
         public bool TrackModifiedColumns { get; set; }
 
+        [Option("nullable", Default = false, HelpText = "C# nullable enabled or not")]
+        public bool Nullable { get; set; }
+
         [Option('o', "output", Default = "console", HelpText = "Output, valid options are console, file")]
         public string Output { get; set; }
 

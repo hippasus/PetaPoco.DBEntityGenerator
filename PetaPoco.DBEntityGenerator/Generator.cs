@@ -421,7 +421,7 @@
 
                 if (cmd.TrackModifiedColumns)
                 {
-                    WriteLine("        public {0}{1} {2}", col.PropertyType, Helpers.CheckNullable(col), col.PropertyName);
+                    WriteLine("        public {0}{1} {2}", col.PropertyType, Helpers.CheckNullable(col, cmd.Nullable), col.PropertyName);
                     WriteLine("        {");
                     WriteLine("            get {{ return _{0}; }}", col.PropertyName);
                     WriteLine("            set");
@@ -433,11 +433,11 @@
 
                     WriteLine("");
 
-                    WriteLine("        private {0}{1} _{2};", col.PropertyType, Helpers.CheckNullable(col), col.PropertyName);
+                    WriteLine("        private {0}{1} _{2};", col.PropertyType, Helpers.CheckNullable(col, cmd.Nullable), col.PropertyName);
                 }
                 else
                 {
-                    WriteLine("        public {0}{1} {2} {{ get; set; }}", col.PropertyType, Helpers.CheckNullable(col), col.PropertyName);
+                    WriteLine("        public {0}{1} {2} {{ get; set; }}", col.PropertyType, Helpers.CheckNullable(col, cmd.Nullable), col.PropertyName);
                 }
 
                 WriteLine("");

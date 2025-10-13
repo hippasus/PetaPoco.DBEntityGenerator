@@ -23,6 +23,7 @@
 
         public bool ExplicitColumns { get; set; }
         public bool TrackModifiedColumns { get; set; }
+        public bool Nullable { get; set; }
 
         public AutoValueDictionary<string, GenerateTableCommand> Tables { get; set; }
 

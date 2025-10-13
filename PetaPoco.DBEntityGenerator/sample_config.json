@@ -10,6 +10,7 @@
   "UsingNamespaces": [ "Your.Customized.Namespace" ],
   "ExplicitColumns": true,
   "TrackModifiedColumns": true,
+  "Nullable": false,
   "Tables": {
     "public.orders": {
       "Ignore": false,
