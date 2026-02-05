@@ -43,7 +43,7 @@
                 tbl.Columns = LoadColumns(tbl);
 
                 // Mark the primary key
-                string PrimaryKey = GetPK(tbl.Name);
+                string PrimaryKey = GetPK(tbl.Name, tbl.Schema);
                 var pkColumn = tbl.Columns.SingleOrDefault(x => x.Name.ToLower().Trim() == PrimaryKey.ToLower().Trim());
                 if (pkColumn != null)
                     pkColumn.IsPK = true;
@@ -93,15 +93,16 @@
             }
         }
 
-        string GetPK(string table)
+        string GetPK(string table, string schema)
         {
 
             string sql = @"SELECT kcu.column_name 
             FROM information_schema.key_column_usage kcu
             JOIN information_schema.table_constraints tc
-            ON kcu.constraint_name=tc.constraint_name
+            ON kcu.constraint_name=tc.constraint_name AND kcu.table_schema=tc.table_schema
             WHERE lower(tc.constraint_type)='primary key'
-            AND kcu.table_name=@tablename";
+            AND kcu.table_name=@tablename
+            AND kcu.table_schema=@tableschema";
 
             using (var cmd = _factory.CreateCommand())
             {
@@ -112,6 +113,11 @@
                 p.ParameterName = "@tableName";
                 p.Value = table;
                 cmd.Parameters.Add(p);
+
+                var pSchema = cmd.CreateParameter();
+                pSchema.ParameterName = "@tableschema";
+                pSchema.Value = schema;
+                cmd.Parameters.Add(pSchema);
 
                 var result = cmd.ExecuteScalar();
 
@@ -130,10 +136,15 @@
                 case "serial8":
                     return "long";
 
+                case "oid":
+                case "xid":
+                case "cid":
+                    return "uint";
+
                 case "bool":
                     return "bool";
 
-                case "bytea    ":
+                case "bytea":
                     return "byte[]";
 
                 case "float8":
@@ -143,7 +154,7 @@
                 case "serial4":
                     return "int";
 
-                case "money    ":
+                case "money":
                     return "decimal";
 
                 case "numeric":
@@ -156,14 +167,26 @@
                     return "short";
 
                 case "time":
+                    return "TimeOnly";
+
                 case "timetz":
+                    return "DateTimeOffset";
+
                 case "timestamp":
                 case "timestamptz":
-                case "date":
                     return "DateTime";
+
+                case "date":
+                    return "DateOnly";
+
+                case "interval":
+                    return "TimeSpan";
 
                 case "uuid":
                     return "Guid";
+
+                case "char":
+                    return "char";
 
                 default:
                     return "string";

@@ -21,14 +21,14 @@
   <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
     <PackageReference Include="MySql.Data" Version="6.9.12" />
     <PackageReference Include="Oracle.ManagedDataAccess" Version="19.29.0" />
-    <PackageReference Include="Npgsql" Version="4.0.17" />
+    <PackageReference Include="Npgsql" Version="5.0.18" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'net472'">
     <PackageReference Include="MySql.Data" Version="9.4.0" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.290" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
-    <PackageReference Include="Npgsql" Version="5.0.18" />
+    <PackageReference Include="Npgsql" Version="9.0.2" />
   </ItemGroup>
 
   <ItemGroup>
