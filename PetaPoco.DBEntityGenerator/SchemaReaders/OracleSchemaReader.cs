@@ -83,7 +83,9 @@
                         Column col = new Column();
                         col.Name = rdr["ColumnName"].ToString();
                         col.PropertyName = CleanUp(col.Name);
-                        col.PropertyType = GetPropertyType(rdr["DataType"].ToString(), (rdr["DataScale"] == DBNull.Value ? null : rdr["DataScale"].ToString()));
+                        col.PropertyType = GetPropertyType(rdr["DataType"].ToString(), 
+                            (rdr["DataScale"] == DBNull.Value ? null : rdr["DataScale"].ToString()),
+                            (rdr["DataPrecision"] == DBNull.Value ? null : rdr["DataPrecision"].ToString()));
                         col.IsNullable = "YES".Equals(rdr["isnullable"].ToString()) || "Y".Equals(rdr["isnullable"].ToString());
                         col.IsAutoIncrement = true;
                         result.Add(col);
@@ -100,7 +102,7 @@
             string sql = @"select column_name from USER_CONSTRAINTS uc
   inner join USER_CONS_COLUMNS ucc on uc.constraint_name = ucc.constraint_name
 where uc.constraint_type = 'P'
-and uc.table_name = upper(:tableName)
+and uc.table_name = :tableName
 and ucc.position = 1";
 
             using (var cmd = _factory.CreateCommand())
@@ -124,7 +126,7 @@ and ucc.position = 1";
             return "";
         }
 
-        string GetPropertyType(string sqlType, string dataScale)
+        string GetPropertyType(string sqlType, string dataScale, string dataPrecision)
         {
             string sysType = "string";
             sqlType = sqlType.ToLower();
@@ -137,6 +139,7 @@ and ucc.position = 1";
                     sysType = "short";
                     break;
                 case "int":
+                case "integer":
                     sysType = "int";
                     break;
                 case "uniqueidentifier":
@@ -145,6 +148,9 @@ and ucc.position = 1";
                 case "smalldatetime":
                 case "datetime":
                 case "date":
+                case "timestamp":
+                case "timestamp with time zone":
+                case "timestamp with local time zone":
                     sysType = "DateTime";
                     break;
                 case "float":
@@ -167,13 +173,30 @@ and ucc.position = 1";
                 case "image":
                 case "binary":
                 case "varbinary":
-                case "timestamp":
+                case "raw":
+                case "long raw":
+                case "blob":
+                case "bfile":
                     sysType = "byte[]";
+                    break;
+                case "clob":
+                case "nclob":
+                case "char":
+                case "nchar":
+                case "varchar":
+                case "varchar2":
+                case "nvarchar2":
+                    sysType = "string";
                     break;
             }
 
             if (sqlType == "number" && dataScale == "0")
-                return "long";
+            {
+                if (String.IsNullOrEmpty(dataPrecision) || int.Parse(dataPrecision) > 10)
+                   return "long";
+                if (int.Parse(dataPrecision) <= 10)
+                   return "int";
+            }
 
             return sysType;
         }
@@ -182,6 +205,7 @@ and ucc.position = 1";
 
         const string TABLE_SQL = @"select TABLE_NAME, 'Table' TABLE_TYPE, USER TABLE_SCHEMA
 from USER_TABLES
+where TABLE_NAME not like 'BIN$%'
 union all
 select VIEW_NAME, 'View', USER
 from USER_VIEWS";
@@ -191,6 +215,7 @@ from USER_VIEWS";
  column_name ColumnName, 
  data_type DataType, 
  data_scale DataScale,
+ data_precision DataPrecision,
  nullable IsNullable
  from USER_TAB_COLS utc 
  where table_name = :tableName

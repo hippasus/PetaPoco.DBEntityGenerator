@@ -136,8 +136,10 @@
                 case "smalldatetime":
                 case "datetime":
                 case "date":
-                case "time":
                     sysType = "DateTime";
+                    break;
+                case "time":
+                    sysType = "TimeSpan";
                     break;
                 case "float":
                     sysType = "double";

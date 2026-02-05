@@ -43,7 +43,7 @@
                 item.Columns = new List<Column>();
 
                 //pull the columns from the schema
-                var columns = schema.Select("TABLE_NAME='" + item.Name + "'");
+                var columns = schema.Select("TABLE_NAME='" + item.Name + "' AND TABLE_SCHEMA='" + item.Schema + "'");
                 foreach (var row in columns)
                 {
                     Column col = new Column();
@@ -66,12 +66,24 @@
         {
             bool bUnsigned = row["COLUMN_TYPE"].ToString().IndexOf("unsigned") >= 0;
             string propType = "string";
-            switch (row["DATA_TYPE"].ToString())
+            string dataType = row["DATA_TYPE"].ToString().ToLower();
+
+            // Special case for TinyInt(1) being Boolean
+            if (dataType == "tinyint" && row["COLUMN_TYPE"].ToString().ToLower().Contains("tinyint(1)"))
+            {
+                return "bool";
+            }
+
+            switch (dataType)
             {
                 case "bigint":
                     propType = bUnsigned ? "ulong" : "long";
                     break;
                 case "int":
+                case "integer":
+                    propType = bUnsigned ? "uint" : "int";
+                    break;
+                case "mediumint":
                     propType = bUnsigned ? "uint" : "int";
                     break;
                 case "smallint":
@@ -86,10 +98,14 @@
                 case "timestamp":
                     propType = "DateTime";
                     break;
+                case "time":
+                    propType = "TimeSpan";
+                    break;
                 case "float":
                     propType = "float";
                     break;
                 case "double":
+                case "real":
                     propType = "double";
                     break;
                 case "numeric":
@@ -113,6 +129,15 @@
                 case "longblob":
                 case "varbinary":
                     propType = "byte[]";
+                    break;
+                case "json":
+                case "text":
+                case "longtext":
+                case "mediumtext":
+                case "tinytext":
+                case "varchar":
+                case "char":
+                    propType = "string";
                     break;
 
             }

@@ -44,7 +44,7 @@
                 tbl.Columns = LoadColumns(tbl);
 
                 // Mark the primary key
-                string PrimaryKey = GetPK(tbl.Name);
+                string PrimaryKey = GetPK(tbl.Name, tbl.Schema);
                 var pkColumn = tbl.Columns.SingleOrDefault(x => x.Name.ToLower().Trim() == PrimaryKey.ToLower().Trim());
                 if (pkColumn != null)
                 {
@@ -99,14 +99,15 @@
             }
         }
 
-        string GetPK(string table)
+        string GetPK(string table, string schema)
         {
             string sql = @"SELECT c.name AS ColumnName
                 FROM sys.indexes AS i 
                 INNER JOIN sys.index_columns AS ic ON i.object_id = ic.object_id AND i.index_id = ic.index_id 
                 INNER JOIN sys.objects AS o ON i.object_id = o.object_id 
+                INNER JOIN sys.schemas AS s ON o.schema_id = s.schema_id
                 LEFT OUTER JOIN sys.columns AS c ON ic.object_id = c.object_id AND c.column_id = ic.column_id
-                WHERE (i.is_primary_key = 1) AND (o.name = @tableName)";
+                WHERE (i.is_primary_key = 1) AND (s.name = @schemaName) AND (o.name = @tableName)";
 
             using (var cmd = _factory.CreateCommand())
             {
@@ -117,6 +118,11 @@
                 p.ParameterName = "@tableName";
                 p.Value = table;
                 cmd.Parameters.Add(p);
+
+                var pSchema = cmd.CreateParameter();
+                pSchema.ParameterName = "@schemaName";
+                pSchema.Value = schema;
+                cmd.Parameters.Add(pSchema);
 
                 var result = cmd.ExecuteScalar();
 
@@ -148,8 +154,10 @@
                 case "datetime":
                 case "datetime2":
                 case "date":
-                case "time":
                     sysType = "DateTime";
+                    break;
+                case "time":
+                    sysType = "TimeSpan";
                     break;
                 case "datetimeoffset":
                     sysType = "DateTimeOffset";
@@ -204,8 +212,8 @@
             IS_NULLABLE AS IsNullable, DATA_TYPE AS DataType, 
             CHARACTER_MAXIMUM_LENGTH AS MaxLength, 
             DATETIME_PRECISION AS DatePrecision,
-            COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'IsIdentity') AS IsIdentity,
-            COLUMNPROPERTY(object_id('[' + TABLE_SCHEMA + '].[' + TABLE_NAME + ']'), COLUMN_NAME, 'IsComputed') as IsComputed
+            COLUMNPROPERTY(object_id(QUOTENAME(TABLE_SCHEMA) + '.' + QUOTENAME(TABLE_NAME)), COLUMN_NAME, 'IsIdentity') AS IsIdentity,
+            COLUMNPROPERTY(object_id(QUOTENAME(TABLE_SCHEMA) + '.' + QUOTENAME(TABLE_NAME)), COLUMN_NAME, 'IsComputed') as IsComputed
         FROM  INFORMATION_SCHEMA.COLUMNS
         WHERE TABLE_NAME=@tableName AND TABLE_SCHEMA=@schemaName
         ORDER BY OrdinalPosition ASC";
