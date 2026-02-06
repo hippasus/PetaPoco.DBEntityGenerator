@@ -2,12 +2,19 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net8.0;net472;</TargetFrameworks>
+    <TargetFrameworks>net10.0;net8.0;net472;</TargetFrameworks>
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <StartupObject />
-    <Version>0.1.6</Version>
+    <Version>0.1.7</Version>
     <Description>Generate DB entity classes for PetaPoco - a migrated tool from the old T4 template</Description>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>PetaPoco.DBEntityGenerator</PackageId>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);PackToolFiles</TargetsForTfmSpecificContentInPackage>
+    <Authors>Hippasus</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,5 +48,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <Target Name="PackToolFiles">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(OutputPath)\**" PackagePath="tools/$(TargetFramework)/%(RecursiveDir)%(Filename)%(Extension)" />
+    </ItemGroup>
+  </Target>
 
 </Project>
