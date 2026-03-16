@@ -347,21 +347,30 @@
                 WriteLine("    [TableName(\"{0}.{1}\")]", context.EscapeSqlIdentifier(tbl.Schema).Replace("\"", "\\\""), context.EscapeSqlIdentifier(tbl.Name).Replace("\"", "\\\""));
             }
 
-            if (tbl.PK != null && tbl.PK.IsAutoIncrement)
+            var PKs = tbl.PrimaryKeys;
+            if (PKs.Count() == 1)
             {
-                if (tbl.SequenceName == null)
-                {
-                    WriteLine("    [PrimaryKey(\"{0}\")]", tbl.PK.Name);
-                }
+                if (PKs.First().IsAutoIncrement)
+            	{
+	                if (tbl.SequenceName == null)
+	                {
+	                        WriteLine("    [PrimaryKey(\"{0}\")]", PKs.First().Name);
+	                }
+	                else
+	                {
+	                        WriteLine("    [PrimaryKey(\"{0}\", sequenceName=\"{1}\")]", PKs.First().Name, tbl.SequenceName);
+	                }
+	            }
                 else
-                {
-                    WriteLine("    [PrimaryKey(\"{0}\", sequenceName=\"{1}\")]", tbl.PK.Name, tbl.SequenceName);
+	            {
+                    //not IsAutoIncrement
+                    WriteLine("    [PrimaryKey(\"{0}\", AutoIncrement=false)]", PKs.First().Name);
                 }
             }
-
-            if (tbl.PK != null && !tbl.PK.IsAutoIncrement)
+            else if (PKs.Count() > 1)
             {
-                WriteLine("    [PrimaryKey(\"{0}\", AutoIncrement=false)]", tbl.PK.Name);
+                WriteLine("    //Table has multiple primary keys which PetaPoco doesn't support: {0}", String.Join(", ", PKs.Select(pk => pk.Name).ToArray()));
+                WriteLine("    //[PrimaryKey(\"{0}\")]", String.Join(",", PKs.Select(pk => pk.Name).ToArray()));
             }
 
             if (cmd.ExplicitColumns)
